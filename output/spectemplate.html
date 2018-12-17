@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="First Author (first@email)" />
+  <meta name="author" content="Second Author (second@email)" />
+  <meta name="date" content="2017-11-12" />
+  <title>Template for Noise Extensions</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="spec_markdown.css" type="text/css" />
+</head>
+<body>
+<div id="header">
+<h1 class="title">Template for Noise Extensions</h1>
+<b>Author:</b> First Author (first@email)<br/>
+<b>Author:</b> Second Author (second@email)<br/>
+<b>Revision:</b> 1<br/>
+<b>Date:</b> 2017-11-12<br/>
+<b>Status:</b> unofficial/unstable<br/>
+<b>PDF:</b> <a href="spectemplate.pdf">spectemplate.pdf</a><br/>
+</div>
+<div id="TOC">
+<h2 class="toc">Table of Contents</h2>
+<ul>
+<li><a href="#introduction">1. Introduction</a></li>
+<li><a href="#overview">2. Overview</a></li>
+<li><a href="#more-sections">3. More sections</a><ul>
+<li><a href="#subsections">3.1. Subsections</a></li>
+</ul></li>
+<li><a href="#even-more-sections">4. Even more sections</a></li>
+<li><a href="#security-considerations">5. Security considerations</a></li>
+<li><a href="#rationales">6. Rationales</a></li>
+<li><a href="#ipr">7. IPR</a></li>
+<li><a href="#acknowledgements">8. Acknowledgements</a></li>
+<li><a href="#references">9. References</a></li>
+</ul>
+</div>
+<h1 id="introduction">1. Introduction</h1>
+<p>This is a template document for writing Noise extension specifications.</p>
+<p>This section should contain a few sentences describing the purpose of this extension.</p>
+<h1 id="overview">2. Overview</h1>
+<p>This section should give a brief overview of how your extension works.</p>
+<p>Introduce new terms in <strong>bold</strong>. Use internal references such as <a href="#introduction">Section 1</a>. Use bibliographic references such as <span class="citation">[<a href="#ref-hkdfpaper">1</a>]</span>, <span class="citation">[<a href="#ref-kudla2005">2</a>]</span>, <span class="citation">[<a href="#ref-rfc5869">3</a>]</span> that refer to bibtex entries in either the <code>spectools/*.bib</code> files or the local <code>my.bib</code> file.</p>
+<h1 id="more-sections">3. More sections</h1>
+<p>Some guidelines:</p>
+<ol start="0" style="list-style-type: decimal">
+<li><p>Use bullets, <code>inline code</code> for <code>variable names</code> and similar, and pre-formatted text blocks when needed.</p></li>
+<li><p>Follow the same style as the Noise Specification.</p></li>
+<li><p>To insert pagebreaks in the PDF document, use the LaTeX <code>\newpage</code> command like so:</p></li>
+</ol>
+
+<ol start="3" style="list-style-type: decimal">
+<li><p>Use Pandoc-specific features sparingly, but Pandoc has a few nice features:</p>
+<ul>
+<li>Subscripts<sub>1</sub> and superscripts<sup>2</sup></li>
+<li>Tables (see later)</li>
+<li>Ability to control numbering of lists (e.g. this list starts at 0).</li>
+</ul></li>
+</ol>
+<h2 id="subsections">3.1. Subsections</h2>
+<p>Add as needed.</p>
+<h1 id="even-more-sections">4. Even more sections</h1>
+<p>Pandoc tables are helpful for displaying patterns:</p>
+<table style="width:85%;">
+<colgroup>
+<col width="38%" />
+<col width="45%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><pre><code>NN():
+  -&gt; e
+  &lt;- e, ee</code></pre></td>
+<td><pre><code>   KN(s):
+     -&gt; s
+     ...
+     -&gt; e
+     &lt;- e, ee, se</code></pre></td>
+</tr>
+<tr class="even">
+<td><pre><code>NK(rs):
+  &lt;- s
+  ...
+  -&gt; e, es
+  &lt;- e, ee</code></pre></td>
+<td><pre><code>   KK(s, rs):
+     -&gt; s
+     &lt;- s
+     ...
+     -&gt; e, es, ss
+     &lt;- e, ee, se</code></pre></td>
+</tr>
+</tbody>
+</table>
+<h1 id="security-considerations">5. Security considerations</h1>
+<p>You must list security considerations for using your extension, for example a bulleted list like so:</p>
+<ul>
+<li><p><strong>Confidentiality</strong>: Some stuff.</p></li>
+<li><p><strong>Integrity</strong>: Other stuff.</p></li>
+</ul>
+<h1 id="rationales">6. Rationales</h1>
+<p>Not required, but might be a good idea to explain nonobvious design decisions.</p>
+<h1 id="ipr">7. IPR</h1>
+<p>This document is hereby placed in the public domain.</p>
+<h1 id="acknowledgements">8. Acknowledgements</h1>
+<p>Make sure to acknowledge prior and related work, and others who contributed.</p>
+<h1 id="references" class="unnumbered">9. References</h1>
+<div id="refs" class="references">
+<div id="ref-hkdfpaper">
+<p>[1] H. Krawczyk, “‘Cryptographic extraction and key derivation: The hkdf scheme’.” Cryptology ePrint Archive, Report 2010/264, 2010. <a href="http://eprint.iacr.org/2010/264" class="uri">http://eprint.iacr.org/2010/264</a></p>
+</div>
+<div id="ref-kudla2005">
+<p>[2] C. Kudla and K. G. Paterson, “Modular Security Proofs for Key Agreement Protocols,” in Advances in Cryptology - ASIACRYPT 2005: 11th International Conference on the Theory and Application of Cryptology and Information Security, 2005. <a href="http://www.isg.rhul.ac.uk/~kp/ModularProofs.pdf" class="uri">http://www.isg.rhul.ac.uk/~kp/ModularProofs.pdf</a></p>
+</div>
+<div id="ref-rfc5869">
+<p>[3] H. Krawczyk and P. Eronen, “HMAC-based Extract-and-Expand Key Derivation Function (HKDF).” Internet Engineering Task Force; RFC 5869 (Informational); IETF, May-2010. <a href="http://www.ietf.org/rfc/rfc5869.txt" class="uri">http://www.ietf.org/rfc/rfc5869.txt</a></p>
+</div>
+</div>
+</body>
+</html>
