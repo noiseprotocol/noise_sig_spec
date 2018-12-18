@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Trevor Perrin(noise@trevp.net)" />
-  <meta name="date" content="2018-12-16" />
+  <meta name="date" content="2018-12-17" />
   <title>Signatures for Noise</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="spec_markdown.css" type="text/css" />
@@ -14,8 +14,8 @@
 <div id="header">
 <h1 class="title">Signatures for Noise</h1>
 <b>Author:</b> Trevor Perrin(noise@trevp.net)<br/>
-<b>Revision:</b> 1<br/>
-<b>Date:</b> 2018-12-16<br/>
+<b>Revision:</b> 2<br/>
+<b>Date:</b> 2018-12-17<br/>
 <b>Status:</b> unofficial/unstable<br/>
 <b>PDF:</b> <a href="noise_sig.pdf">noise_sig.pdf</a><br/>
 </div>
@@ -42,7 +42,7 @@
 <p>Noise handshakes depend on some Diffie-Hellman function (usually an Elliptic Curve Diffie-Hellman function such as X25519).</p>
 <p>Noise uses this function both for forward-secrecy (supplied by the <code>&quot;ee&quot;</code> token) as well as authentication (supplied by the <code>&quot;se&quot;</code> and <code>&quot;es&quot;</code> tokens).</p>
 <p>In some cases the parties might prefer to use signing key pairs for authentication, rather than DH key pairs. For example, maybe they have an existing PKI based on signing keys, or would like to use the signing keys to sign other pieces of data.</p>
-<p>This document describes Noise handshake modifers (<code>&quot;sig&quot;</code>, <code>&quot;sigi&quot;</code>, and <code>&quot;sigr&quot;</code>) and new tokens (<code>&quot;sig1&quot;</code>, <code>&quot;sig2&quot;</code>, etc.) that replace DH authentication with signatures.</p>
+<p>This document describes a <code>&quot;sig&quot;</code> handshake modifier and new tokens (<code>&quot;sig1&quot;</code>, <code>&quot;sig2&quot;</code>, etc.) that replace DH authentication with signatures.</p>
 <h1 id="crypto-functions">3. Crypto functions</h1>
 <p>A signature algorithm in Noise is defined by the following functions and constants:</p>
 <ul>
@@ -61,8 +61,6 @@
 <p>The <code>&quot;sig&quot;</code> pattern modifier replaces all <code>&quot;se&quot;</code> and <code>&quot;es&quot;</code> tokens with <code>&quot;sig&quot;</code> tokens. When the <code>&quot;sig&quot;</code> modifier is used, the DH name section must contain a signature algorithm name (along with other algorithm names, separated by plus signs).</p>
 <p>The <code>&quot;sig&quot;</code> token has a number appended to indicate the index of the public-key algorithm name it refers to, and the <code>&quot;s&quot;</code> tokens have the same number appended. For example, if the Noise pattern name is <code>&quot;XXsig&quot;</code> then <code>&quot;s1&quot;</code> and <code>&quot;sig1&quot;</code> tokens will be used, and the Noise public-key algorithm name section will be something like <code>&quot;448_Ed25519&quot;</code>. If the Noise pattern name is <code>&quot;XXhfs_sig&quot;</code> then algorithm 1 is used for hybrid-forward secrecy, so <code>&quot;s2&quot;</code> and <code>&quot;sig2&quot;</code> tokens will be used, and the Noise pattern name will be something like <code>&quot;448_NewHope_Ed25519&quot;</code>.</p>
 <p>The <code>&quot;sig&quot;</code> modifier can only be used with patterns where <code>&quot;se&quot;</code> is not sent by the responder and <code>&quot;es&quot;</code> is not sent by the initiator, and <code>&quot;ss&quot;</code> does not appear. Attempting to apply it other patterns is invalid.</p>
-<p>The <code>&quot;sigi&quot;</code> modifier only replaces <code>&quot;se&quot;</code> with a signature token, and can only be used with patterns where <code>&quot;se&quot;</code> is sent by the initiator.</p>
-<p>The <code>&quot;sigr&quot;</code> modifier only replaces <code>&quot;es&quot;</code> with a signature token, and can only be used with patterns where <code>&quot;es&quot;</code> is sent by the responder.</p>
 <p>The table below lists some example unmodified patterns on the left, and some signature-based patterns on the right:</p>
 <table style="width:89%;">
 <colgroup>
@@ -101,20 +99,6 @@
       -&gt; s1, sig1</code></pre></td>
 </tr>
 <tr class="even">
-<td><pre><code>XK:
-  &lt;- s
-  ...
-  -&gt; e, es
-  &lt;- e, ee
-  -&gt; s, se</code></pre></td>
-<td><pre><code>    XKsigi:
-      &lt;- s
-      ...
-      -&gt; e, es
-      &lt;- e, ee
-      -&gt; s1, sig1</code></pre></td>
-</tr>
-<tr class="odd">
 <td><pre><code>XK1:
   &lt;- s
   ...
@@ -128,22 +112,6 @@
       &lt;- e, ee, sig1
       -&gt; s1, sig1</code></pre></td>
 </tr>
-<tr class="even">
-<td><pre><code>X1K1:
-  &lt;- s
-  ...
-  -&gt; e
-  &lt;- e, ee, es
-  -&gt; s
-  &lt;- se</code></pre></td>
-<td><pre><code>    X1K1sigr:
-      &lt;- s1
-      ...
-      -&gt; e
-      &lt;- e, ee, sig1
-      -&gt; s
-      &lt;- se</code></pre></td>
-</tr>
 <tr class="odd">
 <td><pre><code>XX:
   -&gt; e
@@ -152,29 +120,7 @@
 <td><pre><code>    XXsig:
       -&gt; e
       &lt;- e, ee, s1, sig1
-      -&gt; s, sig1</code></pre></td>
-</tr>
-<tr class="even">
-<td><pre><code>X1X:
-  -&gt; e
-  &lt;- e, ee, s, es
-  -&gt; s
-  &lt;- se</code></pre></td>
-<td><pre><code>    X1Xsigr:
-      -&gt; e
-      &lt;- e, ee, s1, sig1
-      -&gt; s
-      &lt;- se</code></pre></td>
-</tr>
-<tr class="odd">
-<td><pre><code>XX1:
-  -&gt; e
-  &lt;- e, ee, s
-  -&gt; es, s, se</code></pre></td>
-<td><pre><code>    XX1sigi:
-      -&gt; e
-      &lt;- e, ee, s
-      -&gt; es, s1, sig1</code></pre></td>
+      -&gt; s1, sig1</code></pre></td>
 </tr>
 <tr class="even">
 <td><pre><code>K1N:
@@ -189,36 +135,6 @@
      -&gt; e
      &lt;- e, ee
      -&gt; sig1</code></pre></td>
-</tr>
-<tr class="odd">
-<td><pre><code>K1K:
-  -&gt; s
-  &lt;- s
-  ...
-  -&gt; e, es
-  &lt;- e, ee
-  -&gt; se</code></pre></td>
-<td><pre><code>    K1Ksigi:
-      -&gt; s
-      &lt;- s
-      ...
-      -&gt; e, es
-      &lt;- e, ee
-      -&gt; sig1</code></pre></td>
-</tr>
-<tr class="even">
-<td><pre><code>KK1:
-  -&gt; s
-  &lt;- s
-  ...
-  -&gt; e
-  &lt;- e, ee, se, es</code></pre></td>
-<td><pre><code>    KK1sigr:
-      -&gt; s
-      &lt;- s1
-      ...
-      -&gt; e
-      &lt;- e, ee, se, sig1</code></pre></td>
 </tr>
 <tr class="odd">
 <td><pre><code>K1K1:
@@ -237,18 +153,6 @@
       -&gt; sig1</code></pre></td>
 </tr>
 <tr class="even">
-<td><pre><code>KX:
-  -&gt; s
-  ...
-  -&gt; e
-  &lt;- e, ee, se, s, es</code></pre></td>
-<td><pre><code>    KXsigr:
-      -&gt; s
-      ...
-      -&gt; e
-      &lt;- e, ee, se, s1, sig1</code></pre></td>
-</tr>
-<tr class="odd">
 <td><pre><code>K1X:
   -&gt; s
   ...
@@ -262,20 +166,6 @@
       &lt;- e, ee, s1, sig1
       -&gt; sig1</code></pre></td>
 </tr>
-<tr class="even">
-<td><pre><code>K1X1:
-  -&gt; s
-  ...
-  -&gt; e
-  &lt;- e, ee, s
-  -&gt; se, es</code></pre></td>
-<td><pre><code>    K1X1sigi:
-      -&gt; s1
-      ...
-      -&gt; e
-      &lt;- e, ee, s
-      -&gt; sig1, es</code></pre></td>
-</tr>
 <tr class="odd">
 <td><pre><code>I1N:
   -&gt; e, s
@@ -285,32 +175,6 @@
       -&gt; e, s1
       &lt;- e, ee
       -&gt; sig1</code></pre></td>
-</tr>
-<tr class="even">
-<td><pre><code>I1K:
-  &lt;- s
-  ...
-  -&gt; e, es, s
-  &lt;- e, ee
-  -&gt; se</code></pre></td>
-<td><pre><code>    I1Ksigi:
-      &lt;- s
-      ...
-      -&gt; e, es, s
-      &lt;- e, ee
-      -&gt; sig1</code></pre></td>
-</tr>
-<tr class="odd">
-<td><pre><code>IK1:
-  &lt;- s
-  ...
-  -&gt; e, s
-  &lt;- e, ee, se, es</code></pre></td>
-<td><pre><code>    IK1sigr:
-      &lt;- s1
-      ...
-      -&gt; e, s
-      &lt;- e, ee, se, sig1</code></pre></td>
 </tr>
 <tr class="even">
 <td><pre><code>I1K1:
@@ -327,14 +191,6 @@
       -&gt; sig1</code></pre></td>
 </tr>
 <tr class="odd">
-<td><pre><code>IX:
-  -&gt; e, s
-  &lt;- e, ee, se, s, es</code></pre></td>
-<td><pre><code>    IXsigr:
-      -&gt; e, s
-      &lt;- e, ee, se, s, sig1</code></pre></td>
-</tr>
-<tr class="even">
 <td><pre><code>I1X:
   -&gt; e, s
   &lt;- e, ee, s, es
@@ -343,16 +199,6 @@
       -&gt; e, s1
       &lt;- e, ee, s1, sig1
       -&gt; sig1</code></pre></td>
-</tr>
-<tr class="odd">
-<td><pre><code>I1X1:
-  -&gt; e, s
-  &lt;- e, ee, s
-  -&gt; se, es</code></pre></td>
-<td><pre><code>    I1X1sigi:
-      -&gt; e, s
-      &lt;- e, ee, s
-      -&gt; sig1, es</code></pre></td>
 </tr>
 </tbody>
 </table>
