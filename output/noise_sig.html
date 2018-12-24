@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Trevor Perrin(noise@trevp.net)" />
-  <meta name="date" content="2018-12-17" />
+  <meta name="date" content="2018-12-24" />
   <title>Signatures for Noise</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="spec_markdown.css" type="text/css" />
@@ -14,8 +14,8 @@
 <div id="header">
 <h1 class="title">Signatures for Noise</h1>
 <b>Author:</b> Trevor Perrin(noise@trevp.net)<br/>
-<b>Revision:</b> 2<br/>
-<b>Date:</b> 2018-12-17<br/>
+<b>Revision:</b> 4<br/>
+<b>Date:</b> 2018-12-24<br/>
 <b>Status:</b> unofficial/unstable<br/>
 <b>PDF:</b> <a href="noise_sig.pdf">noise_sig.pdf</a><br/>
 </div>
@@ -59,7 +59,7 @@
 </ul>
 <h1 id="signature-modifiers">5. Signature modifiers</h1>
 <p>The <code>&quot;sig&quot;</code> pattern modifier replaces all <code>&quot;se&quot;</code> and <code>&quot;es&quot;</code> tokens with <code>&quot;sig&quot;</code> tokens. When the <code>&quot;sig&quot;</code> modifier is used, the DH name section must contain a signature algorithm name (along with other algorithm names, separated by plus signs).</p>
-<p>The <code>&quot;sig&quot;</code> token has a number appended to indicate the index of the public-key algorithm name it refers to, and the <code>&quot;s&quot;</code> tokens have the same number appended. For example, if the Noise pattern name is <code>&quot;XXsig&quot;</code> then <code>&quot;s1&quot;</code> and <code>&quot;sig1&quot;</code> tokens will be used, and the Noise public-key algorithm name section will be something like <code>&quot;448_Ed25519&quot;</code>. If the Noise pattern name is <code>&quot;XXhfs_sig&quot;</code> then algorithm 1 is used for hybrid-forward secrecy, so <code>&quot;s2&quot;</code> and <code>&quot;sig2&quot;</code> tokens will be used, and the Noise pattern name will be something like <code>&quot;448_NewHope_Ed25519&quot;</code>.</p>
+<p>The <code>&quot;sig&quot;</code> token has a number appended to indicate the index of the public-key algorithm name it refers to, and the <code>&quot;s&quot;</code> tokens have the same number appended. For example, if the Noise pattern name is <code>&quot;XXsig&quot;</code> then <code>&quot;s1&quot;</code> and <code>&quot;sig1&quot;</code> tokens will be used, and the Noise public-key algorithm name section will be something like <code>&quot;448_Ed25519&quot;</code>. If the Noise pattern name is <code>&quot;XXhfs+sig&quot;</code> then algorithm 1 is used for hybrid-forward secrecy, so <code>&quot;s2&quot;</code> and <code>&quot;sig2&quot;</code> tokens will be used, and the Noise pattern name will be something like <code>&quot;448_NewHope_Ed25519&quot;</code>.</p>
 <p>The <code>&quot;sig&quot;</code> modifier can only be used with patterns where <code>&quot;se&quot;</code> is not sent by the responder and <code>&quot;es&quot;</code> is not sent by the initiator, and <code>&quot;ss&quot;</code> does not appear. Attempting to apply it other patterns is invalid.</p>
 <p>The table below lists some example unmodified patterns on the left, and some signature-based patterns on the right:</p>
 <table style="width:89%;">

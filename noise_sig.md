@@ -2,9 +2,9 @@
 title:      'Signatures for Noise'
 author:
  - Trevor Perrin(noise@trevp.net)
-revision:   '2'
+revision:   '4'
 status:     'unofficial/unstable'
-date:       '2018-12-17'
+date:       '2018-12-24'
 link-citations: 'true'
 ---
 
@@ -49,7 +49,7 @@ New tokens are introduced by this document.  These tokens have a number suffix w
 
 The `"sig"` pattern modifier replaces all `"se"` and `"es"` tokens with `"sig"` tokens.  When the `"sig"` modifier is used, the DH name section must contain a signature algorithm name (along with other algorithm names, separated by plus signs).
 
-The `"sig"` token has a number appended to indicate the index of the public-key algorithm name it refers to, and the `"s"` tokens have the same number appended.  For example, if the Noise pattern name is `"XXsig"` then `"s1"` and `"sig1"` tokens will be used, and the Noise public-key algorithm name section will be something like `"448_Ed25519"`.  If the Noise pattern name is `"XXhfs_sig"` then algorithm 1 is used for hybrid-forward secrecy, so `"s2"` and `"sig2"` tokens will be used, and the Noise pattern name will be something like `"448_NewHope_Ed25519"`.
+The `"sig"` token has a number appended to indicate the index of the public-key algorithm name it refers to, and the `"s"` tokens have the same number appended.  For example, if the Noise pattern name is `"XXsig"` then `"s1"` and `"sig1"` tokens will be used, and the Noise public-key algorithm name section will be something like `"448_Ed25519"`.  If the Noise pattern name is `"XXhfs+sig"` then algorithm 1 is used for hybrid-forward secrecy, so `"s2"` and `"sig2"` tokens will be used, and the Noise pattern name will be something like `"448_NewHope_Ed25519"`.
 
 The `"sig"` modifier can only be used with patterns where `"se"` is not sent by the responder and `"es"` is not sent by the initiator, and `"ss"` does not appear.  Attempting to apply it other patterns is invalid.
 
